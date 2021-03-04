@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -21,46 +23,46 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            // iş koşul kodları
-            return _carDal.GetAll();
-
-
-        }
-
-       
-        public void Add(Car car)
-        {
-            if (car.DailyPrice > 0 && car.Description.Length > 2)
+            //Her saat 22 de sistemi bakıma alır.
+            if (DateTime.Now.Hour == 22)
             {
-                _carDal.Add(car);
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
-            else
+
+
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
+        }
+            
+        public IResult Add(Car car)
+        {
+            if (car.Description.Length<2)
             {
-                Console.WriteLine("Günlük kiralama ücreti 0'dan büyük ve araba açıklaması" +
-                    " 2 harften büyük olmalı! ");
+                return new ErrorResult(Messages.CarDescriptionInvalid);
             }
+             _carDal.Add(car);
+             return new SuccessResult(Messages.CarAdded);            
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             throw new NotImplementedException();
         }
 
-        public Car GetById(int carId)
+        public IDataResult<Car> GetById(int carId)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<Car>(_carDal.Get(p => p.CarId == carId));
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
     }
 }

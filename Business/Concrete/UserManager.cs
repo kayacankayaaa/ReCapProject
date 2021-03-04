@@ -1,36 +1,35 @@
 ﻿using Business.Abstract;
 using Core.Utilities.Results;
-using DataAccess.Abstract;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace Business.Concrete
 {
-    public class ColorManager : IColorService
+    public class UserManager : IUserService
     {
-        public IResult Add(Entities.Concrete.Color color)
+        public IResult Add(User user)
         {
             throw new NotImplementedException();
         }
 
-        public IResult Delete(Entities.Concrete.Color color)
+        public IResult Delete(User user)
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<Entities.Concrete.Color>> GetAll()
+        public IDataResult<List<User>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<Entities.Concrete.Color> GetById(int colorId)
+        public IDataResult<User> GetById(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public IResult Update(Entities.Concrete.Color color)
+        public IResult Update(User user)
         {
             throw new NotImplementedException();
         }
